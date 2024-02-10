@@ -270,3 +270,171 @@ function printMsg(msg: string | number): void {
 
 printMsg("qweqw");
 printMsg(12);
+
+// ______________________________
+// * Примитивные литеральные типы
+const portHttp: number = 3000;
+const portHttps: number = 3001;
+let newItem: "Hello" = "Hello";
+// Теперь тут не может быть другого значения.
+
+// Мы можем это использовтаь в целях получения обязательных данных в строгом формате
+const startServer: StartFunction = (
+  protocol: "http" | "https",
+  port: 3000 | 3001
+): "Server started" => {
+  if (port === portHttp || port === portHttps) {
+    console.log(`${protocol}://${port}` + " Server Started");
+    return "Server started";
+  } else {
+    console.error("Server not started, wrong port");
+  }
+
+  return "Server started";
+};
+
+startServer("https", 3000);
+
+function createAnimation(
+  id: AnimationId,
+  animationName: string,
+  // ! Этот прием используется для того чтобы ограничить то, что может проставлять в данный аргумент функции. Те если мы используем аргумент для отображения инфы о плавности, то
+  // ! То указываем лишь те значения которые допустимы для того или иного браузера или стандарта.
+  timingFunc: AnimationTimingFunc = "ease",
+  duration: number,
+  iterCount: "infinite" | number
+): void {
+  // const elem = document.querySelector(`#${id}`) as HTMLElement;
+  console.log(`#${id} ${animationName} ${timingFunc} ${duration} ${iterCount}`);
+  // if (elem) {
+  // elem.style.animation = `${animationName} ${duration}s ${timingFunc} ${iterCount}`;
+  // }
+}
+
+// Работать без разметки не будет
+createAnimation(123213, "animationName", "ease", 123, 233);
+
+// ______________________________
+// Псевдонимы типов Type Aliases
+
+type AnimationTimingFunc = "ease" | "ease-in" | "ease-out";
+type AnimationId = string | number;
+
+// ____________________________
+
+const serverConfig: ConfigWithRole = {
+  protocol: "http",
+  port: 3000,
+  role: "admin",
+  test: "no",
+};
+
+startServer(serverConfig.protocol, serverConfig.port);
+
+// ______________________________
+// types  additionals
+
+type Config = {
+  protocol: "http" | "https";
+  port: 3000 | 3001;
+};
+
+// ____________________________
+// Перенесение типов
+
+// type Role = {
+//   role: string;
+// };
+
+// type ConfigWithRole = Config & Role;
+
+const typeMerge: ConfigWithRole = {
+  protocol: "http",
+  port: 3000,
+  role: "admin",
+  test: "no",
+};
+
+// Аналогично и для функций
+
+type StartFunction = (protocol: "http" | "https", port: 3000 | 3001) => string;
+
+// ____________________________
+// Interface
+
+type InterfaceConfig = {
+  protocol: "http" | "https";
+  port: 3000 | 3001;
+};
+
+interface ConfigInterface {
+  protocol: "http" | "https";
+  port: 3000 | 3001;
+}
+
+interface Role {
+  role: string;
+}
+
+interface ConfigWithRole extends Config, Role {
+  test: string;
+}
+
+const interfaceServerConfig: InterfaceConfig = {
+  protocol: "http",
+  port: 3000,
+};
+
+// ______________________________
+
+interface ConfigNew {
+  protocol: "http" | "https";
+  port: 3000 | 3001;
+  log: (msg: string) => void;
+}
+
+interface RoleNew {
+  role: string;
+}
+
+interface ConfWithRole extends ConfigNew, RoleNew {
+  test: string;
+}
+
+const newServConfig: ConfWithRole = {
+  protocol: "http",
+  port: 3000,
+  test: "test",
+  role: "admin",
+  log: (msg: string): void => {
+    console.log("qeqwe");
+  },
+};
+
+// type newStartFunction = (
+//   protocol: "http" | "https",
+//   port: 3000 | 3001,
+//   log: (msg: string) => void
+// ) => string;
+
+function newStartServer(
+  protocol: "http" | "https",
+  port: 3000 | 3001,
+  log: (msg: string) => void
+): "Server started" {
+  console.log(`${protocol}://${port} server started`);
+  return "Server started";
+}
+
+newStartServer(newServConfig.protocol, newServConfig.port, newServConfig.log);
+// Индексные свойства
+// ТАкой подход полезен когда ты не знаешь сколько ключей будет в том или ином объекте, но знаешь точно какими они будут типами.
+interface Styles {
+  [key: string]: string;
+}
+
+const styles: Styles = {
+  position: "absolute",
+  top: "10px",
+  bottom: "10px",
+};
