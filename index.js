@@ -177,7 +177,7 @@ var portHttps = 3001;
 var newItem = "Hello";
 // Теперь тут не может быть другого значения.
 // Мы можем это использовтаь в целях получения обязательных данных в строгом формате
-function startServer(protocol, port) {
+var startServer = function (protocol, port) {
     if (port === portHttp || port === portHttps) {
         console.log("".concat(protocol, "://").concat(port) + " Server Started");
         return "Server started";
@@ -186,7 +186,7 @@ function startServer(protocol, port) {
         console.error("Server not started, wrong port");
     }
     return "Server started";
-}
+};
 startServer("https", 3000);
 function createAnimation(id, animationName, 
 // ! Этот прием используется для того чтобы ограничить то, что может проставлять в данный аргумент функции. Те если мы используем аргумент для отображения инфы о плавности, то
@@ -201,3 +201,125 @@ timingFunc, duration, iterCount) {
 }
 // Работать без разметки не будет
 createAnimation(123213, "animationName", "ease", 123, 233);
+// ____________________________
+var serverConfig = {
+    protocol: "http",
+    port: 3000,
+    role: "admin",
+    test: "no",
+};
+startServer(serverConfig.protocol, serverConfig.port);
+// ____________________________
+// Перенесение типов
+// type Role = {
+//   role: string;
+// };
+// type ConfigWithRole = Config & Role;
+var typeMerge = {
+    protocol: "http",
+    port: 3000,
+    role: "admin",
+    test: "no",
+};
+var interfaceServerConfig = {
+    protocol: "http",
+    port: 3000,
+};
+var newServConfig = {
+    protocol: "http",
+    port: 3000,
+    test: "test",
+    role: "admin",
+    log: function (msg) {
+        console.log("qeqwe");
+    },
+};
+// type newStartFunction = (
+//   protocol: "http" | "https",
+//   port: 3000 | 3001,
+//   log: (msg: string) => void
+// ) => string;
+function newStartServer(protocol, port, log) {
+    console.log("".concat(protocol, "://").concat(port, " server started"));
+    return "Server started";
+}
+newStartServer(newServConfig.protocol, newServConfig.port, newServConfig.log);
+var styles = {
+    position: "absolute",
+    top: "10px",
+    bottom: "10px",
+};
+// ____________________________
+// 27 отображение типов
+var simeSalary;
+salary = 333;
+var someUserData = '{"bith": true, "name": "Ivan", "age": 22}';
+var someUserObj = JSON.parse(someUserData);
+console.log(someUserObj.bith);
+var isOk = true;
+var movement = false;
+if (isOk) {
+    movement = "moving";
+}
+var arr = [["ewqewqeqwe"]];
+var face = {
+    login: "Mista",
+    pass: "qweqwe",
+    address: "qweqwe",
+    age: undefined,
+    parents: {
+        mother: "alla",
+    },
+};
+var dbName = "qweqw";
+function sendUserData(obj, db) {
+    var _a, _b;
+    console.log((_b = (_a = obj.parents) === null || _a === void 0 ? void 0 : _a.mother) === null || _b === void 0 ? void 0 : _b.toLocaleUpperCase(), db === null || db === void 0 ? void 0 : db.toLocaleUpperCase());
+}
+sendUserData(face, "dbname");
+var newUser = {
+    login: " asda",
+    pass: "qweqwe",
+    age: 323,
+    address: "qweqwe",
+    parents: {
+        mother: "alla",
+        father: "qwe",
+    },
+};
+// newUser.login = "FAQ"; // error потому readonly
+var basicPorts = [3000, 2000, 80];
+// basicPorts[0] = 4000; // error потому readonly, помимо этого строгость работает и на добавление, и на удаление, а также и на кортежи
+// basicPorts.push(4000); // error потому readonly
+var someArray = [1, 2, 3];
+// someArray.push(4); // error потому readonly
+var userFreeze = {
+    login: " asda",
+    pass: "qweqwe",
+    age: 323,
+    address: "qweqwe",
+};
+// userFreeze.pass = "wqeqwe"; // error потому readonly для всех свойств объектов. Это дженейрик.
+// _____________________________
+// Enum позволяется задать контснты через перечисление.
+var TOP = "Top";
+var RIGHT = "Right";
+var Directions;
+(function (Directions) {
+    Directions[Directions["TOP"] = 0] = "TOP";
+    Directions[Directions["RIGHT"] = 1] = "RIGHT";
+    Directions[Directions["LEFT"] = 2] = "LEFT";
+    Directions[Directions["BOTTOM"] = 3] = "BOTTOM";
+})(Directions || (Directions = {}));
+var TimingFunc;
+(function (TimingFunc) {
+    TimingFunc["EASE"] = "ease";
+    TimingFunc["EASE_IN"] = "ease-in";
+    TimingFunc["LINEAR"] = "linear";
+})(TimingFunc || (TimingFunc = {}));
+function frame(elem, dir, tFunc) {
+    if (dir === Directions.RIGHT) {
+        console.log(tFunc);
+    }
+}
+frame("id", Directions.RIGHT, TimingFunc.EASE);

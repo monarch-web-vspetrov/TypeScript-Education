@@ -438,3 +438,207 @@ const styles: Styles = {
   top: "10px",
   bottom: "10px",
 };
+
+// ____________________________
+// 27 отображение типов
+
+let simeSalary: number;
+
+salary = 333;
+
+interface UserData {
+  bith: boolean;
+  name: string;
+  age: number;
+}
+
+const someUserData = '{"bith": true, "name": "Ivan", "age": 22}';
+const someUserObj: UserData = JSON.parse(someUserData);
+
+console.log(someUserObj.bith);
+
+let isOk = true;
+let movement: boolean | string = false;
+
+if (isOk) {
+  movement = "moving";
+}
+
+const arr: [string[]] | number[] = [["ewqewqeqwe"]];
+// ______________________________
+// 28 Модификатор Optional
+
+interface Facer {
+  readonly login: string;
+  pass: string;
+  age: number | undefined;
+  address: string;
+  parents?: {
+    mother?: string;
+    father?: string;
+  };
+}
+
+const face: Facer = {
+  login: "Mista",
+  pass: "qweqwe",
+  address: "qweqwe",
+  age: undefined,
+  parents: {
+    mother: "alla",
+  },
+};
+
+const dbName = "qweqw";
+
+function sendUserData(obj: Facer, db?: string): void {
+  console.log(
+    obj.parents?.mother?.toLocaleUpperCase(),
+    db?.toLocaleUpperCase()
+  );
+}
+
+sendUserData(face, "dbname");
+
+// _____________________________
+// 29 Not null not undefined
+
+// _____________________________
+// 30 Readonly
+
+interface UserInfo {
+  readonly login: string;
+  pass: string;
+  age: number | undefined;
+  address: string;
+  parents?: {
+    mother?: string;
+    father?: string;
+  };
+}
+
+let newUser: UserInfo = {
+  login: " asda",
+  pass: "qweqwe",
+  age: 323,
+  address: "qweqwe",
+  parents: {
+    mother: "alla",
+    father: "qwe",
+  },
+};
+
+// newUser.login = "FAQ"; // error потому readonly
+
+const basicPorts: readonly number[] = [3000, 2000, 80];
+
+// basicPorts[0] = 4000; // error потому readonly, помимо этого строгость работает и на добавление, и на удаление, а также и на кортежи
+
+// basicPorts.push(4000); // error потому readonly
+
+const someArray: ReadonlyArray<number> = [1, 2, 3];
+
+// someArray.push(4); // error потому readonly
+
+const userFreeze: Readonly<UserInfo> = {
+  login: " asda",
+  pass: "qweqwe",
+  age: 323,
+  address: "qweqwe",
+};
+
+// userFreeze.pass = "wqeqwe"; // error потому readonly для всех свойств объектов. Это дженейрик.
+
+// _____________________________
+// Enum позволяется задать контснты через перечисление.
+
+const TOP = "Top";
+const RIGHT = "Right";
+
+enum Directions {
+  TOP,
+  RIGHT,
+  LEFT,
+  BOTTOM,
+}
+
+enum TimingFunc {
+  EASE = "ease",
+  EASE_IN = "ease-in",
+  LINEAR = "linear",
+}
+
+// Используя const мы очистим все перечисления переменных в итоговом коде
+// ЛУчше не использовать const, так как они могут быть изменены в процессе работы
+// const enum TimingFuncN {
+//   EASE = 23,
+//   EASE_IN = 12,
+//   LINEAR = `${EASE} ${EASE_IN}`,
+// }
+
+function frame(elem: string, dir: Directions, tFunc: TimingFunc.EASE): void {
+  if (dir === Directions.RIGHT) {
+    console.log(tFunc);
+  }
+}
+
+frame("id", Directions.RIGHT, TimingFunc.EASE);
+
+// _____________________________
+// 32 Unkown
+
+// Допустим мы получаем от сервера какие-то данные.
+// * let something: any;
+// * something = "qeq";
+// Далее, мы эти данные кладем в массив
+// * let data: string[] = something;
+// И хотим по массиву отработать методом find
+// * data.find((e) => e);
+// И в результате мы получим ошибку в рантайм так как будем применять метод массива к строке
+
+let smth: unknown;
+
+smth = "qwe";
+// let data: string[] = smth;
+// data.find((e) => e);
+
+const someValue: unknown = 10;
+// someValue.method(); // error так как any позволяет вызвать все.
+
+function fetchData(arg: unknown): void {
+  if (typeof arg === "string") {
+    console.log(arg.toUpperCase());
+  } else if (typeof arg === "number") {
+    console.log(arg.toExponential(3));
+  } else {
+    // console.log(arg.toLocaleUpperCase()); // error
+  }
+}
+
+const jsonObj = '{"name": "John", "age": 30}';
+
+function saveParse(s: string): unknown {
+  return JSON.parse(s);
+}
+
+const jsonData = saveParse(jsonObj);
+
+// jsonData.someMethod(); //error так как unknown не имеет методов
+
+function transferData(arg: unknown): void {
+  if (typeof arg === "string") {
+    console.log(arg.toUpperCase());
+  } else if (typeof arg === "number") {
+    console.log(arg.toExponential(3));
+  } else {
+    // console.log(arg.toLocaleUpperCase()); // error
+  }
+}
+
+transferData(jsonObj);
+
+// Unkown перекрывает все типи в юнионах, кроме any
+type T0 = any | unknown;
+type T1 = number | unknown;
+// Но если Unkown встает вместе с интерсекшеном
+type T2 = number & unknown;
