@@ -642,3 +642,31 @@ type T0 = any | unknown;
 type T1 = number | unknown;
 // Но если Unkown встает вместе с интерсекшеном
 type T2 = number & unknown;
+
+// _____________________________
+// Запросы типов
+
+// interface DataFromUser {
+//   water: number;
+//   el: number;
+// }
+
+const dataFromControl = {
+  water: 200,
+  el: 350,
+};
+
+function checkReadings(data: typeof dataFromControl): boolean {
+  const dataFromUser = {
+    water: 200,
+    el: 350,
+  };
+  if (data.el === dataFromUser.el && data.water === dataFromUser.water) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+const PI = 3.14;
+let PIClone: typeof PI;
