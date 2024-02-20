@@ -1,4 +1,3 @@
-var _a;
 var userName = "Ivan";
 // '', "", `` - string
 // 10, 0, 0.2, -40, 3e10 - number
@@ -62,13 +61,13 @@ var test5 = undefined;
 var test6 = undefined;
 // ______________________________
 // Symbol and BigInt
-var id = Symbol("id");
-var dataS = (_a = {},
-    _a[id] = 1,
-    _a);
-console.log(dataS[id]);
-var num1 = 1n;
-console.log(num1);
+// let id: symbol = Symbol("id");
+// const dataS = {
+//   [id]: 1,
+// };
+// console.log(dataS[id]);
+// const num1: bigint = 1n;
+// console.log(num1);
 // _______________________________
 // Objects
 var userData = {
@@ -317,9 +316,102 @@ var TimingFunc;
     TimingFunc["EASE_IN"] = "ease-in";
     TimingFunc["LINEAR"] = "linear";
 })(TimingFunc || (TimingFunc = {}));
+// Используя const мы очистим все перечисления переменных в итоговом коде
+// ЛУчше не использовать const, так как они могут быть изменены в процессе работы
+// const enum TimingFuncN {
+//   EASE = 23,
+//   EASE_IN = 12,
+//   LINEAR = `${EASE} ${EASE_IN}`,
+// }
 function frame(elem, dir, tFunc) {
     if (dir === Directions.RIGHT) {
         console.log(tFunc);
     }
 }
 frame("id", Directions.RIGHT, TimingFunc.EASE);
+// _____________________________
+// 32 Unkown
+// Допустим мы получаем от сервера какие-то данные.
+// * let something: any;
+// * something = "qeq";
+// Далее, мы эти данные кладем в массив
+// * let data: string[] = something;
+// И хотим по массиву отработать методом find
+// * data.find((e) => e);
+// И в результате мы получим ошибку в рантайм так как будем применять метод массива к строке
+var smth;
+smth = "qwe";
+// let data: string[] = smth;
+// data.find((e) => e);
+var someValue = 10;
+// someValue.method(); // error так как any позволяет вызвать все.
+function fetchData(arg) {
+    if (typeof arg === "string") {
+        console.log(arg.toUpperCase());
+    }
+    else if (typeof arg === "number") {
+        console.log(arg.toExponential(3));
+    }
+    else {
+        // console.log(arg.toLocaleUpperCase()); // error
+    }
+}
+var jsonObj = '{"name": "John", "age": 30}';
+function saveParse(s) {
+    return JSON.parse(s);
+}
+var jsonData = saveParse(jsonObj);
+// jsonData.someMethod(); //error так как unknown не имеет методов
+function transferData(arg) {
+    if (typeof arg === "string") {
+        console.log(arg.toUpperCase());
+    }
+    else if (typeof arg === "number") {
+        console.log(arg.toExponential(3));
+    }
+    else {
+        // console.log(arg.toLocaleUpperCase()); // error
+    }
+}
+transferData(jsonObj);
+// _____________________________
+// Запросы типов
+// interface DataFromUser {
+//   water: number;
+//   el: number;
+// }
+var dataFromControl = {
+    water: 200,
+    el: 350,
+};
+function checkReadings(data) {
+    var dataFromUser = {
+        water: 200,
+        el: 350,
+    };
+    if (data.el === dataFromUser.el && data.water === dataFromUser.water) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+var PI = 3.14;
+var PIClone;
+// _____________________________
+// Утверждение типов type assertion
+var fetchDataNew = function (url, method) {
+    console.log("fetched");
+};
+var requestOption = {
+    url: "https://jsonplaceholder.typicode.com/posts",
+    method: "GET",
+}; // данный позволяет установить значения в объекте как константы
+fetchDataNew(requestOption.url, requestOption.method);
+fetchDataNew(requestOption.url, requestOption.method);
+// Альтернативный синтакцис
+// fetchDataNew(requestOption.url, <"GET">requestOption.method); // * наименее популярный
+var box = document.querySelector(".box");
+var input = document.querySelector("input");
+var someInfo = input.value;
+console.log(someInfo);
