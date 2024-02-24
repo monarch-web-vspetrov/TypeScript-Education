@@ -1,3 +1,9 @@
+interface BasicConfig {
+  protocol: string;
+  port: number;
+  role?: string;
+}
+
 const newServConfig1: BasicConfig = {
   protocol: "http",
   port: 3000,
@@ -8,12 +14,6 @@ const backupConfig: BasicConfig = {
   protocol: "http",
   port: 3000,
 };
-
-interface BasicConfig {
-  protocol: string;
-  port: number;
-  role?: string;
-}
 
 function startNewStartServer(congig: BasicConfig): "Server started" {
   console.log(
